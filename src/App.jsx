@@ -5,27 +5,11 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 const LoginPage = lazy(() => import("mfe_auth/LoginPage"));
 const RegisterPage = lazy(() => import("mfe_auth/RegisterPage"));
 const SuccessPage = lazy(() => import("mfe_auth/SuccessPage"));
+const DashboardPage = lazy(() => import("mfe_auth/DashboardPage"));
 
 function PrivateRoute({ children }) {
   const token = localStorage.getItem("token");
   return token ? children : <Navigate to="/login" replace />;
-}
-
-function Dashboard() {
-  return (
-    <div style={{ padding: 32, fontFamily: "sans-serif" }}>
-      <h1>Plus — Dashboard</h1>
-      <p>Bem-vindo ao sistema de gestão de estoque.</p>
-      <button
-        onClick={() => {
-          localStorage.clear();
-          window.location.href = "/login";
-        }}
-      >
-        Sair
-      </button>
-    </div>
-  );
 }
 
 export default function App() {
@@ -59,10 +43,12 @@ export default function App() {
             path="/"
             element={
               <PrivateRoute>
-                <Dashboard />
+                <DashboardPage />
               </PrivateRoute>
             }
           />
+          {/* rotas nao encontradas  */}
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Suspense>
     </BrowserRouter>
